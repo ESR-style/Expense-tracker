@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
-import API from '../src/api.js';
+import API from '../api.js';
 
 function AddExpense() {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [date, setDate] = useState('');
+    const [message, setMessage] = useState(''); 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        API.post('/expenses', { description, amount, category, date })
+        
+        // Convert amount to number
+        const formattedAmount = parseFloat(amount);
+        
+        API.post('/expenses', { description, amount: formattedAmount, category, date })
             .then(() => {
-                
+                setMessage('Expense added successfully!');
+                setDescription(''); // Clear the form
+                setAmount('');
+                setCategory('');
+                setDate('');
+
+                setTimeout(()=>{
+                    setMessage('')
+                },3000);
             })
             .catch((error) => {
                 console.error('Error adding expense:', error);
+                setMessage('Error adding expense. Please try again.');
             });
     };
 
@@ -24,7 +38,7 @@ function AddExpense() {
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
+                placeholder="Name"
                 required
             />
             <input
@@ -48,6 +62,8 @@ function AddExpense() {
                 required
             />
             <button type="submit">Add Expense</button>
+
+            {message && <p>{message}</p>} {/* Display success or error message */}
         </form>
     );
 }

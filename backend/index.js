@@ -30,7 +30,7 @@ app.get('*', (req, res) => {
 
 app.post('/api/expenses', async (req, res) => {
     try {
-        const { description, amount, date } = req.body;
+        const { description, amount, date , category } = req.body;
 
         const result = await pool.query("SELECT COUNT(*) FROM expenses");
         const count = parseInt(result.rows[0].count, 10);
@@ -38,8 +38,8 @@ app.post('/api/expenses', async (req, res) => {
         const id = count + 1;
 
         const newExpense = await pool.query(
-            "INSERT INTO expenses (id, description, amount, date) VALUES ($1, $2, $3, $4) RETURNING *",
-            [id, description, amount, date]
+            "INSERT INTO expenses (id, description, amount, date, category) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [id, description, amount, date, category]
         );
 
         res.json(newExpense.rows[0]);
@@ -55,6 +55,7 @@ app.get("/api/expenses", async (req, res) => {
         res.json(allExpenses.rows);
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ error: "Server error" });
     }
 });
 

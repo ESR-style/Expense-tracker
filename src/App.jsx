@@ -1,6 +1,6 @@
 import React from 'react';
-import ExpensesList from '../components/ExpensesList.jsx';
-import AddExpense from '../components/AddExpense.jsx';
+import ExpensesList from './components/ExpensesList.jsx';
+import AddExpense from './components/AddExpense.jsx';
 
 function App() {
     return (
