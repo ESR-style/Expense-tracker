@@ -10,6 +10,8 @@ import Homepage from './pages/Homepage.jsx';
 import TransactionPage from './pages/TransactionPage.jsx';
 import Analytics from './pages/Analytics.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
+import Login from './components/Login.jsx';
+import Register from './components/Register.jsx';
 
 const router = createBrowserRouter([ 
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path: "/analytics",
     element: <Analytics/>
+  },
+  {
+    path: "/login",
+    element: <Login/>
+  },
+  {
+    path: "/register",
+    element: <Register/>
   },
   {
     path: "*",
