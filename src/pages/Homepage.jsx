@@ -1,5 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
+import ExpenseChart from '../components/ExpenseChart'
+import CategoryChart from '../components/CategoryChart'
 
 const Homepage = () => {
   return (
@@ -42,10 +44,12 @@ const Homepage = () => {
           <div className="bg-gray-800 rounded-lg p-6 shadow-lg min-h-[300px]">
             <h2 className="text-2xl font-bold text-white mb-4">Expense Chart</h2>
             {/* Chart component will go here */}
+            <ExpenseChart/>
           </div>
           <div className="bg-gray-800 rounded-lg p-6 shadow-lg min-h-[300px]">
             <h2 className="text-2xl font-bold text-white mb-4">Category Chart</h2>
             {/* Chart component will go here */}
+            <CategoryChart/>
           </div>
         </div>
 
