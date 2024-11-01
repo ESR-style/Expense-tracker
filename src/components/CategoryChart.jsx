@@ -1,17 +1,27 @@
-// CategoryChart.jsx - Pie chart for expense categories
+// CategoryChart.jsx
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
-const CategoryChart = () => {
-  const data = [
-    { name: 'Food', value: 400 },
-    { name: 'Transport', value: 300 },
-    { name: 'Shopping', value: 300 },
-    { name: 'Bills', value: 200 },
-    { name: 'Entertainment', value: 100 },
-  ];
+const CategoryChart = ({ expenses }) => {
+  // Process data to group by category
+  const processData = () => {
+    if (!expenses || expenses.length === 0) return [];
+
+    const groupedData = expenses.reduce((acc, expense) => {
+      if (!acc[expense.category]) {
+        acc[expense.category] = 0;
+      }
+      acc[expense.category] += parseFloat(expense.amount);
+      return acc;
+    }, {});
+
+    return Object.entries(groupedData)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+  };
 
   const COLORS = ['#60A5FA', '#34D399', '#F472B6', '#FBBF24', '#A78BFA'];
+  const data = processData();
 
   return (
     <div className="w-full h-[250px]">
@@ -37,6 +47,7 @@ const CategoryChart = () => {
               borderRadius: '8px',
               color: '#fff'
             }}
+            formatter={(value) => `₹${value.toFixed(2)}`}
           />
           <Legend 
             verticalAlign="bottom" 

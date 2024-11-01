@@ -127,7 +127,40 @@ app.post('/api/login', async (req, res) => {
       { expiresIn: '1d' }
     );
 
-    res.json({ token });
+    res.json({ token ,
+      name: user.rows[0].name
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// server.js - Add these new routes
+
+// Get user's expenses
+app.get('/api/expenses', authenticateToken, async (req, res) => {
+  try {
+    const expenses = await pool.query(
+      'SELECT * FROM transactions WHERE user_id = $1 AND type = $2 ORDER BY date DESC',
+      [req.user.id, 'expense']
+    );
+    res.json(expenses.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Add new expense
+app.post('/api/expenses', authenticateToken, async (req, res) => {
+  try {
+    const { category, amount, description } = req.body;
+    const newExpense = await pool.query(
+      'INSERT INTO transactions (user_id, type, category, amount, description) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [req.user.id, 'expense', category, amount, description]
+    );
+    res.json(newExpense.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

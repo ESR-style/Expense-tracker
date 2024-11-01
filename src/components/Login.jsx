@@ -20,6 +20,7 @@ const Login = () => {
       
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userName', data.name);
         navigate('/');
       } else {
         setError(data.error);

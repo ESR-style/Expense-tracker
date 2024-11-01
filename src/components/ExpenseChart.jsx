@@ -1,22 +1,32 @@
-// ExpenseChart.jsx - Line chart for expense trends
+// ExpenseChart.jsx
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const ExpenseChart = () => {
-  const data = [
-    { date: '1 Mar', amount: 200 },
-    { date: '5 Mar', amount: 100 },
-    { date: '10 Mar', amount: 800 },
-    { date: '15 Mar', amount: 600 },
-    { date: '20 Mar', amount: 50 },
-    { date: '25 Mar', amount: 90 },
-    { date: '30 Mar', amount: 1300 },
-  ];
+const ExpenseChart = ({ expenses }) => {
+  // Process data to group by date
+  const processData = () => {
+    if (!expenses || expenses.length === 0) return [];
+    
+    const groupedData = expenses.reduce((acc, expense) => {
+      const date = new Date(expense.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date] += parseFloat(expense.amount);
+      return acc;
+    }, {});
+
+    return Object.entries(groupedData)
+      .map(([date, amount]) => ({ date, amount }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  };
+
+  const chartData = processData();
 
   return (
     <div className="w-full h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
+        <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis 
             dataKey="date" 
@@ -34,6 +44,7 @@ const ExpenseChart = () => {
               borderRadius: '8px',
               color: '#fff'
             }}
+            formatter={(value) => [`₹${value.toFixed(2)}`, 'Amount']}
           />
           <Line 
             type="monotone" 
