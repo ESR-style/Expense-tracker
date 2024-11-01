@@ -147,11 +147,11 @@ const Navbar = () => {
           >
             Transactions
           </Link>
-          <Link to="/analytics" 
+          <Link to="/loans" 
             className="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Analytics
+            Loan
           </Link>
           {token ? (
             <button
