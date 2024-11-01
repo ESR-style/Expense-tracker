@@ -167,5 +167,43 @@ app.post('/api/expenses', authenticateToken, async (req, res) => {
   }
 });
 
+// server.js - Add or update DELETE endpoint
+app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM transactions WHERE transaction_id = $1 AND user_id = $2 RETURNING *',
+      [req.params.id, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    res.json({ message: 'Transaction deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.put('/api/expenses/:id', authenticateToken, async (req, res) => {
+  try {
+    const { category, amount, description } = req.body;
+    const result = await pool.query(
+      'UPDATE transactions SET category = $1, amount = $2, description = $3 WHERE transaction_id = $4 AND user_id = $5 RETURNING *',
+      [category, amount, description, req.params.id, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
