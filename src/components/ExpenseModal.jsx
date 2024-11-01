@@ -1,4 +1,3 @@
-// src/components/ExpenseModal.jsx
 import React, { useState, useEffect } from 'react';
 
 const ExpenseModal = ({ isOpen, onClose, onAddExpense, initialData, isEditing }) => {

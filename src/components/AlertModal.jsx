@@ -1,4 +1,3 @@
-// Create new component: src/components/AlertModal.jsx
 import React from 'react';
 
 const AlertModal = ({ isOpen, onClose, onConfirm, message }) => {

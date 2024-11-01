@@ -21,30 +21,6 @@ const pool = new Pool({
   database: process.env.DB_DATABASE
 });
 
-// Database tables setup - run these in pgAdmin:
-/*
-CREATE DATABASE expense_tracker;
-
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE transactions (
-    transaction_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(user_id),
-    type VARCHAR(50) NOT NULL,
-    category VARCHAR(100) NOT NULL,
-    amount DECIMAL(10,2) NOT NULL,
-    description TEXT,
-    date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-*/
-
 // Authentication Middleware
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -65,7 +41,7 @@ app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
     
-    // Check if user existstables
+    // Check if user exists
     const userExists = await pool.query(
       'SELECT * FROM users WHERE email = $1',
       [email]
@@ -136,7 +112,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// server.js - Add these new routes
 
 // Get user's expenses
 app.get('/api/expenses', authenticateToken, async (req, res) => {

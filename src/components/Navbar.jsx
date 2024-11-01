@@ -1,4 +1,4 @@
-// Navbar.jsx
+
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ const Navbar = () => {
   const token = localStorage.getItem('token');
   const userName = localStorage.getItem('userName');
 
-  // Add a watch effect for userName changes
+  //a watch effect for userName changes
   useEffect(() => {
     if (!token) {
       localStorage.removeItem('userName');
