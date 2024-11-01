@@ -1,20 +1,18 @@
 # SpendSage - Personal Expense Tracker
-
 A full-stack web application for tracking personal expenses with detailed analytics and visualization.
 
 ## Features
-
 - 🔐 User authentication with JWT
 - 💰 Track daily and monthly expenses
 - 📊 Visual analytics with charts
 - 📱 Responsive design for mobile and desktop
 - 🔍 Filter transactions by date
-- 📋 CRUD operations for expenses
+- 📋 CRUD operations for expenses and loans
 - 📈 Expense trends visualization
 - 🔄 Real-time updates
+- 💸 Manage loans with detailed records
 
 ## Tech Stack
-
 ### Frontend
 - React.js
 - TailwindCSS
@@ -29,12 +27,11 @@ A full-stack web application for tracking personal expenses with detailed analyt
 - bcrypt for password hashing
 
 ## Installation
-
 1. Clone the repository
 ```bash
 git clone https://github.com/ESR-style/Expense-tracker.git
 ```
-    
+
 2. Install dependencies for frontend
 ```
 npm install
@@ -49,7 +46,6 @@ npm install
 4. Set up PostgreSQL database
 ```
 CREATE DATABASE expense_tracker;
-
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -57,13 +53,22 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE transactions (
     transaction_id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),
     type VARCHAR(50) NOT NULL,
     category VARCHAR(100) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
+    description TEXT,
+    date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE loans (
+    loan_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    person_name VARCHAR(255) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    type VARCHAR(50) NOT NULL,
     description TEXT,
     date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -108,3 +113,22 @@ npm run dev
 | POST | `/api/expenses` | Create new expense |
 | PUT | `/api/expenses/:id` | Update expense |
 | DELETE | `/api/expenses/:id` | Delete expense |
+
+### Loans
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/loans` | Get all loans |
+| POST | `/api/loans` | Create new loan |
+| PUT | `/api/loans/:id` | Update loan |
+| DELETE | `/api/loans/:id` | Delete loan |
+
+## Screenshots
+
+### Homepage
+![Homepage Screenshot](/public/Screenshot%20(190).png)
+
+### Expenses Page
+![Expenses Page Screenshot](/public/Screenshot%20(191).png)
+
+### Loans Page
+![Loans Page Screenshot](/public/Screenshot%20(192).png)
