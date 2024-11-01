@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,6 +12,7 @@ import Analytics from './pages/Analytics.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
+import LoanPage from './pages/LoanPage.jsx';
 
 const router = createBrowserRouter([ 
   {
@@ -23,8 +24,8 @@ const router = createBrowserRouter([
   element: <TransactionPage/>
   },
   {
-    path: "/analytics",
-    element: <Analytics/>
+    path: "/loans",
+    element: <LoanPage/>
   },
   {
     path: "/login",

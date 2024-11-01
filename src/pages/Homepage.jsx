@@ -5,12 +5,14 @@ import Navbar from '../components/Navbar'
 import ExpenseChart from '../components/ExpenseChart'
 import CategoryChart from '../components/CategoryChart'
 import ExpenseModal from '../components/ExpenseModal'
+import LoanModal from '../components/LoanModal'
 
 const Homepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [todayExpense, setTodayExpense] = useState(0);
   const [monthlyExpense, setMonthlyExpense] = useState(0);
+  const [isLoanModalOpen, setIsLoanModalOpen] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -86,6 +88,30 @@ const Homepage = () => {
     }
   };
 
+  const handleAddLoan = async (loanData) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/loans', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(loanData)
+      });
+      
+      if (response.ok) {
+        const newLoan = await response.json();
+        setIsLoanModalOpen(false);
+        // Optionally refresh data or show success message
+        // You could also redirect to loans page
+        navigate('/loans');
+      }
+    } catch (err) {
+      console.error('Failed to add loan:', err);
+      alert('Failed to add loan. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900">
       <Navbar />
@@ -101,12 +127,15 @@ const Homepage = () => {
             </svg>
             Add Expense
           </button>
-          <button className="bg-purple-500 hover:bg-purple-600 text-white px-4 md:px-6 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm md:text-base">
+          <button
+            onClick={() => setIsLoanModalOpen(true)}
+            className="bg-purple-500 hover:bg-purple-600 text-white px-4 md:px-6 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm md:text-base"
+          >
             <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8v8m0 0v8m0-8h8m-8 0H4" />
             </svg>
-            Add Loan
-          </button>
+             Add Loan
+            </button>
         </div>
 
         {/* Expense Cards */}
@@ -163,6 +192,11 @@ const Homepage = () => {
           onClose={() => setIsModalOpen(false)}
           onAddExpense={handleAddExpense}
         />
+        <LoanModal
+          isOpen={isLoanModalOpen}
+          onClose={() => setIsLoanModalOpen(false)}
+          onAddLoan={handleAddLoan}
+         />
       </main>
     </div>
   );

@@ -57,8 +57,8 @@ const Navbar = () => {
               <Link to="/transactions" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">
                 Transactions
               </Link>
-              <Link to="/analytics" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">
-                Analytics
+              <Link to="/loans" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">
+                Loan
               </Link>
             </div>
           </div>
