@@ -10,11 +10,19 @@ const Navbar = () => {
   const token = localStorage.getItem('token');
   const userName = localStorage.getItem('userName');
 
+  // Add a watch effect for userName changes
+  useEffect(() => {
+    if (!token) {
+      localStorage.removeItem('userName');
+    }
+  }, [token]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     navigate('/login');
     setIsProfileOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -35,7 +43,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                SpendSage
+                SpendScope
               </span>
             </Link>
           </div>
@@ -56,7 +64,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Profile Dropdown */}
+            {/* User Profile Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -66,7 +74,7 @@ const Navbar = () => {
                   <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
                 {token && userName && (
-                  <span className="text-sm font-medium">{userName}</span>
+                  <span className="text-sm font-medium hidden md:block">{userName}</span>
                 )}
               </button>
 
@@ -122,6 +130,11 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          {token && userName && (
+            <div className="px-3 py-2 text-gray-400 font-medium border-b border-gray-700 mb-2">
+              {userName}
+            </div>
+          )}
           <Link to="/" 
             className="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -140,15 +153,24 @@ const Navbar = () => {
           >
             Analytics
           </Link>
-          {!token && (
+          {token ? (
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              Logout
+            </button>
+          ) : (
             <>
-              <Link to="/login"
+              <Link
+                to="/login"
                 className="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Login
               </Link>
-              <Link to="/register"
+              <Link
+                to="/register"
                 className="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -159,7 +181,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
