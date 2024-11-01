@@ -71,13 +71,14 @@ CREATE TABLE transactions (
 ```
 
 5. Create .env file in backend directory
-
+```
 DB_USER=your_username
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 DB_DATABASE=expense_tracker
 JWT_SECRET=your_jwt_secret
+```
 
 ## Usage  
 
