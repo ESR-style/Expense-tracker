@@ -31,7 +31,7 @@ const LoanPage = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [activeDropdown]);
-  
+
   const fetchLoans = async () => {
     try {
       const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
@@ -92,7 +92,7 @@ const LoanPage = () => {
       }
     } catch (err) {
       console.error('Failed to add loan:', err);
-      alert('Failed to add loan. Please try again.');
+     
     }
   };
 
@@ -129,7 +129,7 @@ const LoanPage = () => {
       setSelectedLoan(null);
     } catch (err) {
       console.error('Failed to update loan:', err);
-      alert('Failed to update loan. Please try again.');
+     
     }
   };
 
@@ -152,7 +152,7 @@ const LoanPage = () => {
       setDeleteAlert({ isOpen: false, loanId: null });
     } catch (err) {
       console.error('Failed to delete loan:', err);
-      alert('Failed to delete loan. Please try again.');
+     
     }
   };
 

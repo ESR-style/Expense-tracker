@@ -87,7 +87,7 @@ const Homepage = () => {
       console.error('Failed to add expense:', err);
     }
   };
-  
+
   const handleAddLoan = async (loanData) => {
     try {
       const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
@@ -118,7 +118,6 @@ const Homepage = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.error('Failed to add loan:', err);
-      alert('Failed to add loan. Please try again.');
     }
   };
 
