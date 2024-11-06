@@ -90,25 +90,47 @@ const Homepage = () => {
 
   const handleAddLoan = async (loanData) => {
     try {
+      // Validate data before sending
+      const validatedData = {
+        person_name: loanData.person_name?.trim(),
+        type: loanData.type?.trim(),
+        amount: parseFloat(loanData.amount),
+        description: loanData.description?.trim(),
+        due_date: loanData.due_date
+      };
+  
+      // Pre-submission validation
+      if (!validatedData.person_name) throw new Error('Person name is required');
+      if (!validatedData.type) throw new Error('Type is required');
+      if (!validatedData.amount || isNaN(validatedData.amount) || validatedData.amount <= 0) {
+        throw new Error('Valid amount is required');
+      }
+      if (!validatedData.description) throw new Error('Description is required');
+  
       const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(loanData)
+        body: JSON.stringify(validatedData)
       });
-      
-      if (response.ok) {
-        const newLoan = await response.json();
-        setIsLoanModalOpen(false);
-        // Optionally refresh data or show success message
-        // You could also redirect to loans page
-        navigate('/loans');
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add loan');
       }
+  
+      const newLoan = await response.json();
+      setIsLoanModalOpen(false);
+      navigate('/loans');
+      // Optional: Add success message
+      // toast.success('Loan added successfully');
+      
     } catch (err) {
       console.error('Failed to add loan:', err);
-      alert('Failed to add loan. Please try again.');
+      // Show specific error message
+      alert(err.message || 'Failed to add loan. Please try again.');
     }
   };
 
