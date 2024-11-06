@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import LoanModal from '../components/LoanModal';
 import AlertModal from '../components/AlertModal';
 
-const LoanPage = () => {
+const LoanPage = () => {  
   const [loans, setLoans] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
