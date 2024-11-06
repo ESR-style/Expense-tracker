@@ -68,7 +68,7 @@ const Homepage = () => {
 
   const handleAddExpense = async (expenseData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/expenses', {
+      const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/expenses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Homepage = () => {
 
   const handleAddLoan = async (loanData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/loans', {
+      const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
