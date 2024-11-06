@@ -87,50 +87,38 @@ const Homepage = () => {
       console.error('Failed to add expense:', err);
     }
   };
-
+  
   const handleAddLoan = async (loanData) => {
     try {
-      // Validate data before sending
-      const validatedData = {
-        person_name: loanData.person_name?.trim(),
-        type: loanData.type?.trim(),
-        amount: parseFloat(loanData.amount),
-        description: loanData.description?.trim(),
-        due_date: loanData.due_date
-      };
-  
-      // Pre-submission validation
-      if (!validatedData.person_name) throw new Error('Person name is required');
-      if (!validatedData.type) throw new Error('Type is required');
-      if (!validatedData.amount || isNaN(validatedData.amount) || validatedData.amount <= 0) {
-        throw new Error('Valid amount is required');
-      }
-      if (!validatedData.description) throw new Error('Description is required');
-  
       const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(validatedData)
+        body: JSON.stringify({
+          person_name: loanData.personName,
+          amount: parseFloat(loanData.amount),
+          type: loanData.type,
+          description: loanData.description || 'No description', // Added default
+          status: 'active', // Added required field
+          due_date: null // Added optional field
+        })
       });
-  
+        
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add loan');
+        const errorData = await response.text();
+        console.error('Server error:', errorData);
+        throw new Error('Failed to add loan');
       }
   
       const newLoan = await response.json();
-      setIsLoanModalOpen(false);
-      navigate('/loans');
-      // Optional: Add success message
-      // toast.success('Loan added successfully');
-      
+      setLoans(prevLoans => [newLoan, ...prevLoans]);
+      calculateTotals([newLoan, ...loans]);
+      setIsModalOpen(false);
     } catch (err) {
       console.error('Failed to add loan:', err);
-      // Show specific error message
-      alert(err.message || 'Failed to add loan. Please try again.');
+      alert('Failed to add loan. Please try again.');
     }
   };
 

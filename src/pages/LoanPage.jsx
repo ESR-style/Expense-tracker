@@ -31,18 +31,23 @@ const LoanPage = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [activeDropdown]);
-
+  
   const fetchLoans = async () => {
     try {
       const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Cache-Control': 'no-cache'
         }
       });
+  
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched loans:', data); // Debug log
         setLoans(data);
         calculateTotals(data);
+      } else {
+        console.error('Failed to fetch loans:', response.status);
       }
     } catch (err) {
       console.error('Failed to fetch loans:', err);
@@ -103,19 +108,25 @@ const LoanPage = () => {
           person_name: updatedData.personName,
           amount: parseFloat(updatedData.amount),
           type: updatedData.type,
-          description: updatedData.description || ''
+          description: updatedData.description || 'No description',
+          status: selectedLoan.status || 'active', // Preserve existing status
+          due_date: selectedLoan.due_date || null // Preserve existing due date
         })
       });
-
-      if (response.ok) {
-        const editedLoan = await response.json();
-        setLoans(prevLoans => prevLoans.map(loan => 
-          loan.loan_id === editedLoan.loan_id ? editedLoan : loan
-        ));
-        calculateTotals(loans);
-        setIsEditModalOpen(false);
-        setSelectedLoan(null);
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Server error:', errorData);
+        throw new Error('Failed to update loan');
       }
+  
+      const editedLoan = await response.json();
+      setLoans(prevLoans => prevLoans.map(loan => 
+        loan.loan_id === editedLoan.loan_id ? editedLoan : loan
+      ));
+      calculateTotals(loans);
+      setIsEditModalOpen(false);
+      setSelectedLoan(null);
     } catch (err) {
       console.error('Failed to update loan:', err);
       alert('Failed to update loan. Please try again.');
@@ -124,19 +135,21 @@ const LoanPage = () => {
 
   const handleDelete = async (loanId) => {
     try {
-      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/${loanId}`, {
+      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/api/loans/${loanId}`, { // Fixed URL
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-
-      if (response.ok) {
-        const updatedLoans = loans.filter(loan => loan.loan_id !== loanId);
-        setLoans(updatedLoans);
-        calculateTotals(updatedLoans);
-        setDeleteAlert({ isOpen: false, loanId: null });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete loan');
       }
+  
+      const updatedLoans = loans.filter(loan => loan.loan_id !== loanId);
+      setLoans(updatedLoans);
+      calculateTotals(updatedLoans);
+      setDeleteAlert({ isOpen: false, loanId: null });
     } catch (err) {
       console.error('Failed to delete loan:', err);
       alert('Failed to delete loan. Please try again.');
