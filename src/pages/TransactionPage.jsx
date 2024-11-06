@@ -33,7 +33,7 @@ const TransactionPage = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/expenses', {
+      const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/expenses', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -75,7 +75,7 @@ const TransactionPage = () => {
 
   const handleEdit = async (updatedData) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/expenses/${selectedTransaction.transaction_id}`, {
+      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/api/expenses/${selectedTransaction.transaction_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const TransactionPage = () => {
 
   const handleDelete = async (transactionId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/expenses/${transactionId}`, {
+      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/api/expenses/${transactionId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -34,7 +34,7 @@ const LoanPage = () => {
 
   const fetchLoans = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/loans', {
+      const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ const LoanPage = () => {
 
   const handleAddLoan = async (loanData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/loans', {
+      const response = await fetch('https://expense-tracker-backend-rose.vercel.app/api/loans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const LoanPage = () => {
 
   const handleEdit = async (updatedData) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/loans/${selectedLoan.loan_id}`, {
+      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/api/loans/${selectedLoan.loan_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const LoanPage = () => {
 
   const handleDelete = async (loanId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/loans/${loanId}`, {
+      const response = await fetch(`https://expense-tracker-backend-rose.vercel.app/${loanId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
