@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -59,6 +58,9 @@ const Navbar = () => {
               </Link>
               <Link to="/loans" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">
                 Loan
+              </Link>
+              <Link to="/analytics" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150">
+                Analytics
               </Link>
             </div>
           </div>
@@ -152,6 +154,12 @@ const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Loan
+          </Link>
+          <Link to="/analytics" 
+            className="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Analytics
           </Link>
           {token ? (
             <button

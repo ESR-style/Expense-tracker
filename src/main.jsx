@@ -36,6 +36,10 @@ const router = createBrowserRouter([
     element: <Register/>
   },
   {
+    path: "/analytics",
+    element: <Analytics/>
+  },
+  {
     path: "*",
     element: <ErrorPage/>
   }
