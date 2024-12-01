@@ -29,12 +29,13 @@ const Analytics = () => {
       
       if (response.ok) {
         const data = await response.json();
+        // Convert selected date to string format (YYYY-MM)
+        const selectedMonthStr = `${selectedDate.year}-${String(selectedDate.month).padStart(2, '0')}`;
+        
         // Filter expenses for selected month and year
-        const filteredExpenses = data.filter(expense => {
-          const expenseDate = new Date(expense.date);
-          return expenseDate.getMonth() + 1 === selectedDate.month && 
-                 expenseDate.getFullYear() === selectedDate.year;
-        });
+        const filteredExpenses = data.filter(expense => 
+          expense.date.startsWith(selectedMonthStr)
+        );
         
         setExpenses(filteredExpenses);
         calculateAnalytics(filteredExpenses);
@@ -99,17 +100,17 @@ const Analytics = () => {
           <p className="text-3xl sm:text-4xl font-bold text-red-400">₹{totalExpense.toFixed(2)}</p>
         </div>
 
-        {/* Charts */}
+        {/* Charts - Updated container heights */}
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2 mb-6 sm:mb-8">
           <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Expense Trends</h2>
-            <div className="h-[250px] sm:h-[300px]">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-4">Expense Trends</h2>
+            <div className="h-[250px]">
               <ExpenseChart expenses={expenses} />
             </div>
           </div>
           <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Category Distribution</h2>
-            <div className="h-[250px] sm:h-[300px]">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-4">Category Distribution</h2>
+            <div className="h-[250px]">
               <CategoryChart expenses={expenses} />
             </div>
           </div>

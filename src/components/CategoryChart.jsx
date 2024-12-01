@@ -52,21 +52,19 @@ const CategoryChart = ({ expenses }) => {
   const data = processData();
 
   return (
-    <div className="w-full h-[300px]">
+    <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 20 }}>
           <Pie
             data={data}
             cx="50%"
-            cy="50%"
+            cy="40%"
             labelLine={false}
             label={renderCustomizedLabel}
-            innerRadius={60}
-            outerRadius={90}
+            innerRadius={40}  // Increased from 30
+            outerRadius={80}  // Increased from 60
             paddingAngle={5}
             dataKey="value"
-            animationBegin={0}
-            animationDuration={1500}
           >
             {data.map((entry, index) => (
               <Cell 
@@ -94,20 +92,28 @@ const CategoryChart = ({ expenses }) => {
           />
           <Legend 
             verticalAlign="bottom" 
-            height={36}
-            iconType="circle"
-            iconSize={10}
+            height={25}  // Reduced height to accommodate larger chart
+            iconSize={8}
             formatter={(value) => (
               <span style={{ 
                 color: 'rgba(255,255,255,0.8)', 
-                fontSize: '12px',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                transition: 'all 0.2s'
+                fontSize: '10px',
+                padding: '1px 2px',
+                whiteSpace: 'nowrap',
+                maxWidth: '80px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
               }}>
                 {value}
               </span>
             )}
+            wrapperStyle={{
+              paddingTop: '5px',
+              bottom: 0,
+              width: '100%',
+              maxHeight: '25px',
+              overflowX: 'auto'
+            }}
           />
         </PieChart>
       </ResponsiveContainer>

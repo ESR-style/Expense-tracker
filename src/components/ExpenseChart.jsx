@@ -23,9 +23,12 @@ const ExpenseChart = ({ expenses }) => {
   const chartData = processData();
 
   return (
-    <div className="w-full h-[300px]">
+    <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
+        <LineChart 
+          data={chartData}
+          margin={{ top: 5, right: 5, left: -15, bottom: 5 }}
+        >
           <defs>
             <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#06B6D4" stopOpacity={0.3}/>
@@ -40,16 +43,19 @@ const ExpenseChart = ({ expenses }) => {
           <XAxis 
             dataKey="date" 
             stroke="rgba(255,255,255,0.6)"
-            tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 12 }}
+            tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 9 }} // Reduced font size
             tickLine={{ stroke: 'rgba(255,255,255,0.2)' }}
             axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
+            interval="preserveStartEnd" // Show only start and end ticks on mobile
+            height={30} // Reduced height
           />
           <YAxis 
             stroke="rgba(255,255,255,0.6)"
-            tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 12 }}
+            tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 9 }} // Reduced font size
             tickLine={{ stroke: 'rgba(255,255,255,0.2)' }}
             axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
             tickFormatter={(value) => `₹${value}`}
+            width={35} // Reduced width for Y-axis
           />
           <Tooltip 
             contentStyle={{ 

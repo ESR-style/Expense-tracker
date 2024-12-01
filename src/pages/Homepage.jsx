@@ -35,8 +35,13 @@ const Homepage = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setExpenses(data);
-        calculateExpenses(data);
+        // Filter for current month
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const currentMonthExpenses = data.filter(expense => 
+          expense.date.startsWith(currentMonth)
+        );
+        setExpenses(currentMonthExpenses);
+        calculateExpenses(currentMonthExpenses);
       }
     } catch (err) {
       console.error('Failed to fetch expenses:', err);
@@ -171,35 +176,29 @@ const Homepage = () => {
           </div>
         </div>
 
-        {/* Enhanced Charts Section */}
+        {/* Charts Section - Updated container heights */}
         <div className="grid gap-4 sm:gap-8 grid-cols-1 md:grid-cols-2 mb-8 sm:mb-12">
-          <div className="relative bg-gradient-to-br from-gray-900/50 to-gray-950/50 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-md border border-gray-800/50 min-h-[400px] transition-all duration-300 hover:shadow-2xl group overflow-hidden">
+          <div className="relative bg-gradient-to-br from-gray-900/50 to-gray-950/50 rounded-2xl p-4 sm:p-6 shadow-xl backdrop-blur-md border border-gray-800/50 min-h-[350px] transition-all duration-300 hover:shadow-2xl group overflow-hidden">
             {/* Animated background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
             
-            <h2 className="relative text-xl sm:text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text mb-6">
+            <h2 className="relative text-lg sm:text-xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text mb-4">
               Expense Trends
             </h2>
-            <div className="relative p-4 h-[300px] bg-gray-900/40 rounded-xl border border-gray-800/50 backdrop-blur-sm shadow-inner">
-              {/* Chart container with enhanced styling */}
-              <div className="w-full h-full transition-transform duration-300 transform group-hover:scale-102">
-                <ExpenseChart expenses={expenses} />
-              </div>
+            <div className="relative h-[250px] bg-gray-900/40 rounded-xl border border-gray-800/50 backdrop-blur-sm shadow-inner">
+              <ExpenseChart expenses={expenses} />
             </div>
           </div>
 
-          <div className="relative bg-gradient-to-br from-gray-900/50 to-gray-950/50 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-md border border-gray-800/50 min-h-[400px] transition-all duration-300 hover:shadow-2xl group overflow-hidden">
+          <div className="relative bg-gradient-to-br from-gray-900/50 to-gray-950/50 rounded-2xl p-4 sm:p-6 shadow-xl backdrop-blur-md border border-gray-800/50 min-h-[350px] transition-all duration-300 hover:shadow-2xl group overflow-hidden">
             {/* Animated background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-purple-600/10 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
             
-            <h2 className="relative text-xl sm:text-2xl font-bold text-transparent bg-gradient-to-r from-fuchsia-400 to-purple-500 bg-clip-text mb-6">
+            <h2 className="relative text-lg sm:text-xl font-bold text-transparent bg-gradient-to-r from-fuchsia-400 to-purple-500 bg-clip-text mb-4">
               Category Distribution
             </h2>
-            <div className="relative p-4 h-[300px] bg-gray-900/40 rounded-xl border border-gray-800/50 backdrop-blur-sm shadow-inner">
-              {/* Chart container with enhanced styling */}
-              <div className="w-full h-full transition-transform duration-300 transform group-hover:scale-102">
-                <CategoryChart expenses={expenses} />
-              </div>
+            <div className="relative h-[250px] bg-gray-900/40 rounded-xl border border-gray-800/50 backdrop-blur-sm shadow-inner">
+              <CategoryChart expenses={expenses} />
             </div>
           </div>
         </div>
